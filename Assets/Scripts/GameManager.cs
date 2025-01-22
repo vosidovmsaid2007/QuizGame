@@ -16,7 +16,16 @@ public class GameManager : MonoBehaviour
     private Text factText;
 
     [SerializeField]
+    private Text trueAnswerText;
+
+    [SerializeField]
+    private Text falseAnswerText;
+
+    [SerializeField]
     private float timeBetweenQuestions = 1f;
+
+    [SerializeField]
+    private GameObject TrueButton, FalseButton;
 
 
     void Start(){
@@ -32,6 +41,15 @@ public class GameManager : MonoBehaviour
         currentQuestion = unansweredQuestions[randomQuestionIndex];
         
         factText.text = currentQuestion.fact;
+
+        if(currentQuestion.isTrue){
+            trueAnswerText.text = "CORRECT";
+            falseAnswerText.text = "WRONG";
+        }
+        else{
+            trueAnswerText.text = "WRONG";
+            falseAnswerText.text = "CORRECT";
+        }
     }
 
     IEnumerator TransitionToNextQuestion(){
@@ -43,22 +61,15 @@ public class GameManager : MonoBehaviour
     }
 
     public void UserSelectTrue(){
-        if(currentQuestion.isTrue){
-            Debug.Log("Correct");
-        }
-        else{
-            Debug.Log("Wrong");
-        }
+        FalseButton.SetActive(false);
+        trueAnswerText.gameObject.SetActive(true);
+
         StartCoroutine(TransitionToNextQuestion());
     }
 
     public void UserSelectFalse(){
-        if(!currentQuestion.isTrue){
-            Debug.Log("Correct");
-        }
-        else{
-            Debug.Log("Wrong");
-        }
+        TrueButton.SetActive(false);
+        falseAnswerText.gameObject.SetActive(true);
 
         StartCoroutine(TransitionToNextQuestion());
     }
